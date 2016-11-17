@@ -10,7 +10,7 @@ DDS header is 128 (0x80) bytes
 ST header
 0000 ST\0\0
 0004 4
-0008 3 or 4
+0008 4
 000C Width
 0010 Height
 0014 Width
@@ -23,7 +23,7 @@ ST header
 0030 1
 0034 0x00008080
 0038 0x80
-003C 0x52
+003C 0x52 // not sure! copy this to extra data
 0040 char[32] Filename
 0060 0
 0064 0
@@ -89,6 +89,7 @@ Name: WP_TraneM10_08_F
 Dimensions: 512x256
 Texture data count: 65536
 Output to wp_tranem10_08_f.dds
+Output extra data to wp_tranem10_08_f.dat
 ```
 
 ## dds2st
@@ -112,7 +113,6 @@ Wrote ST header
 Wrote BIR header
 Wrote texture data
 Output to wp_tranem10_08_f.st
-Output extra data to wp_tranem10_08_f.dat
 ```
 
 ## stinfo
