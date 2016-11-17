@@ -60,6 +60,17 @@ namespace dds2st
             string file = args[0];
             Console.WriteLine("Opening " + file + " ..");
             Stream fileStream = File.OpenRead(file);
+            
+            string fileExtraName = file.Replace(".dds", ".dat");
+            Console.WriteLine("Opening extra data file " + fileExtraName + " ..");
+            Stream fileExtraStream = File.OpenRead(fileExtraName);
+            byte[] temp = new byte[32];
+            fileExtraStream.Read(temp, 0, 32);
+            string textureName = Encoding.ASCII.GetString(temp);
+            int _0008 = fileExtraStream.ReadByte(); // 0008 in ST
+            int dxt_byte = fileExtraStream.ReadByte(); // 001C in ST
+            int _003C = fileExtraStream.ReadByte(); // 003C in ST
+            fileExtraStream.Close();
 
             Console.WriteLine("Getting file info ..");
             FileInfo fileInfo = new FileInfo(file);
@@ -78,24 +89,16 @@ namespace dds2st
                 return;
             }
 
-            Console.WriteLine("Input texture information ..");
+            Console.WriteLine("Texture information");
 
-            Console.Write("Name: ");
-            string textureName = "";
-            if (args.Length >= 2)
-            {
-                textureName = args[1];
-                Console.WriteLine(textureName);
-            }
-            else
-            {
-                textureName = Console.ReadLine();
-            }
+            Console.WriteLine("Name: " + textureName);
 
             int width = fileBytes[0x10] | fileBytes[0x11] << 8 | fileBytes[0x12] << 16 | fileBytes[0x13] << 24;
             Console.WriteLine("Width: " + width);
             int height = fileBytes[0x0C] | fileBytes[0x0D] << 8 | fileBytes[0x0E] << 16 | fileBytes[0x0F] << 24;
             Console.WriteLine("Height: " + height);
+
+            // int dxt_byte = fileBytes[0x57] == 0x31 ? 0x00 : 0xFF;
             
             PixelData[] pixels = new PixelData[(fileSize - 0x80) / 16];
             int p = 0;
@@ -121,14 +124,14 @@ namespace dds2st
                 ms.Write(Encoding.ASCII.GetBytes("ST"), 0, 2);
                 ms.Write(BitConverter.GetBytes(0), 0, 2);
                 ms.Write(BitConverter.GetBytes(4), 0, 4); // 0004
-                ms.Write(BitConverter.GetBytes(4), 0, 4); // 0008
+                ms.Write(BitConverter.GetBytes(_0008), 0, 4); // 0008
 
                 ms.Write(BitConverter.GetBytes(width), 0, 4); // 000C
                 ms.Write(BitConverter.GetBytes(height), 0, 4); // 0010
                 ms.Write(BitConverter.GetBytes(width), 0, 4); // 0014
                 ms.Write(BitConverter.GetBytes(height), 0, 4); // 0018
 
-                ms.Write(BitConverter.GetBytes(0xFB), 0, 4); // 001C
+                ms.Write(BitConverter.GetBytes(dxt_byte), 0, 4); // 001C
                 ms.Write(BitConverter.GetBytes(0), 0, 4); // 0020
                 ms.Write(BitConverter.GetBytes(1), 0, 4); // 0024
                 ms.Write(BitConverter.GetBytes(1), 0, 4); // 0028
@@ -136,7 +139,7 @@ namespace dds2st
                 ms.Write(BitConverter.GetBytes(1), 0, 4); // 0030
                 ms.Write(BitConverter.GetBytes(0x00008080), 0, 4); // 0034
                 ms.Write(BitConverter.GetBytes(0x80), 0, 4); // 0038
-                ms.Write(BitConverter.GetBytes(0x52), 0, 4); // 003C
+                ms.Write(BitConverter.GetBytes(_003C), 0, 4); // 003C
                 
                 ms.Write(Encoding.ASCII.GetBytes(textureName), 0, Encoding.ASCII.GetBytes(textureName).Length); // 0040
                 ms.Write(nullbytes, 0, 32 - Encoding.ASCII.GetBytes(textureName).Length); // 0040

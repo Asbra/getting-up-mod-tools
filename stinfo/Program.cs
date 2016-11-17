@@ -67,6 +67,11 @@ namespace stinfo
                 FileInfo fileInfo = new FileInfo(file);
                 long fileSize = fileInfo.Length;
                 string fileName = fileInfo.Name;
+                
+                if (fileInfo.Extension.ToLower() != ".st")
+                {
+                    continue;
+                }
 
                 byte[] fileBytes = new byte[fileSize];
                 fileStream.Read(fileBytes, 0, (int)fileSize);
@@ -86,24 +91,11 @@ namespace stinfo
 
                 int width = fileBytes[0xC] | fileBytes[0xD] << 8 | fileBytes[0xE] << 16 | fileBytes[0xF] << 24;
                 int height = fileBytes[0x10] | fileBytes[0x11] << 8 | fileBytes[0x12] << 16 | fileBytes[0x13] << 24;
-
-                /*
-                PixelData[] pixels = new PixelData[(fileSize - 0x184) / 16];
-                int p = 0;
-
-                for (int i = 0x184; i < fileSize; i += 16)
-                {
-                    pixels[p++] = new PixelData(fileBytes, i);
-                }
-
-                p = p * 16;
-                */
-
-                Console.Write(fileName + "\t");
-                Console.Write(textureName + "\t" + (textureName.Length >= 16 ? "" : "\t"));
+                
+                Console.Write(fileName + "\t" + (fileName.Length >= 16 ? "" : (textureName.Length <= 8 ? "\t\t" : "\t")));
+                Console.Write(textureName + "\t" + (textureName.Length >= 16 ? "" : (textureName.Length <= 8 ? "\t\t" : "\t")));
                 Console.Write(width + "x" + height + "\t\t");
-                Console.Write("DXT 0x" + fileBytes[0x1C].ToString("X2") + "\t");
-                // Console.Write(p + "\t");
+                Console.Write(fileBytes[0x1C].ToString("X2") + "\t");
                 Console.Write(Environment.NewLine);
             }
         }

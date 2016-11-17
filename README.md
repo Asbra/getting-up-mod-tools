@@ -10,7 +10,7 @@ DDS header is 128 (0x80) bytes
 ST header
 0000 ST\0\0
 0004 4
-0008 4
+0008 3 or 4
 000C Width
 0010 Height
 0014 Width
@@ -78,7 +78,7 @@ Converts ST texture files from the game into DDS texture files
 
 *Usage* `st2dds.exe filename.st`
 
-### Example
+#### Example
 ```
 gettingup\texture_tools>st2dds wp_tranem10_08_f.st
 Opening wp_tranem10_08_f.st ..
@@ -96,7 +96,7 @@ Converts DDS textures to ST texture files
 
 *Usage* `dds2st.exe filename.dds Texture_Name`
 
-### Example
+#### Example
 ```
 C:\Projects\gettingup\texture_tools>dds2st wp_tranem10_08_f.dds
 Opening wp_tranem10_08_f.dds ..
@@ -112,4 +112,32 @@ Wrote ST header
 Wrote BIR header
 Wrote texture data
 Output to wp_tranem10_08_f.st
+Output extra data to wp_tranem10_08_f.dat
+```
+
+## stinfo
+Displays information about all ST files in given path
+
+*Usage* `stinfo [path]`
+#### Example
+```
+C:\Projects\gettingup\texture_tools>stinfo "C:\Steam\steamapps\common\Marc Ecko's Getting Up 2\engine\textures\flock"
+cck_beat.st             CCK_Beat                256x32          F4
+cck_shield.st           CCK_Shield              256x32          F8
+cockroach.st            cockroach               32x64           1D
+crowd_picket01.st       Crowd_Picket01          256x32          F6
+crowd_yell01.st         Crowd_Yell01            256x32          F4
+girlrun.st              GirlRun                 256x32          FD
+girlsign.st             GirlSign                256x32          F5
+man2shake.st            Man2Shake               256x32          F5
+manrun.st               ManRun                  256x32          F9
+manshake.st             ManShake                256x32          F6
+mansign.st              ManSign                 256x32          F5
+pedwalk_01_256.st       PedWalk_01_256          256x256         F7
+pedwalk_02_256.st       PedWalk_02_256          256x256         F7
+pedwalk_03_256.st       PedWalk_03_256          256x256         F7
+scroll_cars01_m10.st    Scroll_Cars01_M10       64x32           3F
+scroll_cars02_m10.st    Scroll_Cars02_M10       128x64          00
+tranewalk256.st         TraneWalk256            256x256         F7
+tranewalk_pal.st        TraneWalk_Pal-PC        256x256         F6
 ```
