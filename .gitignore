@@ -1,0 +1,9 @@
+.vs/
+bin/
+obj/
+*.exe
+*.exe.config
+*.pdb
+*.vshost.*
+*.st
+*.dds
