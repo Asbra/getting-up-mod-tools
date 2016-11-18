@@ -141,3 +141,10 @@ scroll_cars02_m10.st    Scroll_Cars02_M10       128x64          00
 tranewalk256.st         TraneWalk256            256x256         F7
 tranewalk_pal.st        TraneWalk_Pal-PC        256x256         F6
 ```
+
+## stviewer
+Displays a ST texture in a simple Windows form
+
+*Usage* `stviewer [path]`
+#### Example
+![Screenshot of stviewer](http://i.imgur.com/Iq3liqp.png "stviewer displaying FF_PosterM03_04 texture file")
